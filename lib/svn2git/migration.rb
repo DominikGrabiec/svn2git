@@ -63,10 +63,11 @@ module Svn2Git
         end
 
         opts.on('--branches BRANCHES_PATH', 'Subpath to branches from repository URL (default: branches)') do |branches|
-          options[:branches] = branches
+          options[:branches] = branches =~ /,/ ? branches.split(",") : [branches]
         end
+        
         opts.on('--tags TAGS_PATH', 'Subpath to tags from repository URL (default: tags)') do |tags|
-          options[:tags] = tags
+          options[:tags] = tags =~ /,/ ? tags.split(",") : [tags]
         end
 
         opts.on('--rootistrunk', 'Use this if the root level of the repo is equivalent to the trunk and there are no tags or branches') do
@@ -133,8 +134,8 @@ module Svn2Git
 
         # Add each component to the command that was passed as an argument.
         cmd += "--trunk=#{trunk} " unless trunk.nil?
-        cmd += "--tags=#{tags} " unless tags.nil?
-        cmd += "--branches=#{branches} " unless branches.nil?
+        tags.inject(cmd) { |cmd, tag| cmd += "--tags=#{tag} " } unless tags.nil?
+        branches.inject(cmd) { |cmd, branch| cmd += "--branches=#{branch} " } unless branches.nil?
 
         cmd += @url
 
@@ -150,8 +151,8 @@ module Svn2Git
         regex = []
         unless rootistrunk
           regex << "#{trunk}[/]" unless trunk.nil?
-          regex << "#{tags}[/][^/]+[/]" unless tags.nil?
-          regex << "#{branches}[/][^/]+[/]" unless branches.nil?
+          regex << "(#{tags.join("|")})[/][^/]+[/]" unless tags.nil?
+          regex << "(#{branches.join("|")})[/][^/]+[/]" unless branches.nil?
         end
         regex = '^(?:' + regex.join('|') + ')(?:' + exclude.join('|') + ')'
         cmd += " '--ignore-paths=#{regex}'"
