@@ -84,28 +84,28 @@ create a git repo from a svn repo in the specified layout.
 1. The svn repo is in the standard layout of (trunk, branches, tags) at the
 root level of the repo.
 
-        $ svn2git http://svn.example.com/path/to/repo
+    $ svn2git http://svn.example.com/path/to/repo
 
 2. The svn repo is NOT in standard layout and has only a trunk and tags at the
 root level of the repo.
 
-        $ svn2git http://svn.example.com/path/to/repo --trunk dev --tags rel --nobranches
+    $ svn2git http://svn.example.com/path/to/repo --trunk dev --tags rel --nobranches
 
 3. The svn repo is NOT in standard layout and has only a trunk at the root
 level of the repo.
 
-        $ svn2git http://svn.example.com/path/to/repo --trunk trunk --nobranches --notags
+    $ svn2git http://svn.example.com/path/to/repo --trunk trunk --nobranches --notags
 
 4. The svn repo is NOT in standard layout and has no trunk, branches, or tags
 at the root level of the repo. Instead the root level of the repo is
 equivalent to the trunk and there are no tags or branches.
 
-        $ svn2git http://svn.example.com/path/to/repo --rootistrunk
+    $ svn2git http://svn.example.com/path/to/repo --rootistrunk
 
 5. The svn repo is in the standard layout but you want to exclude the massive
 doc directory and the backup files you once accidently added.
 
-        $ svn2git http://svn.example.com/path/to/repo --exclude doc --exclude '.*~$'
+    $ svn2git http://svn.example.com/path/to/repo --exclude doc --exclude '.*~$'
 
 The above will create a git repository in the current directory with the git
 version of the svn repository. Hence, you need to make a directory that you
@@ -124,7 +124,7 @@ as a mirroring tool for your SVN repositories.
 
 The command to call is:
 
-        $ cd <EXISTING_REPO> && svn2git --rebase
+    $ cd <EXISTING_REPO> && svn2git --rebase
 
 Authors
 -------
