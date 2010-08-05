@@ -157,7 +157,13 @@ module Svn2Git
         regex = '^(?:' + regex.join('|') + ')(?:' + exclude.join('|') + ')'
         cmd += " '--ignore-paths=#{regex}'"
       end
-      run_command(cmd)
+
+      # Continues fetching until all revisions have been processed as sometimes
+      # on large or complicated repositories it stops prematurely.
+      ret = ""
+      begin
+        ret = run_command(cmd)
+      end until ret.strip == ""
 
       get_branches
     end
@@ -258,4 +264,3 @@ module Svn2Git
 
   end
 end
-
